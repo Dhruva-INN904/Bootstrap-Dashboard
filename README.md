@@ -22,3 +22,6 @@ Bootstrap-Dashboard/
 ├── index.html
 ├── style.css
 ├── README.md
+
+## output of this project
+-output.png contains the snapshot of the output
