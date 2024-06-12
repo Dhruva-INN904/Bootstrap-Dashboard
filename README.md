@@ -19,9 +19,11 @@ This is a simple and responsive admin dashboard created using HTML, CSS, and Boo
 
 ## File Structure
 Bootstrap-Dashboard/
+├── README.md
 ├── index.html
 ├── style.css
-├── README.md
+├── v_output.png
+
 
 ## output of this project
 -output.png contains the snapshot of the output
