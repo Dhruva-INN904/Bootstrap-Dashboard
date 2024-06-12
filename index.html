@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">UI Elements</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Charts</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Tabs & Panels</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Responsive Tables</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Forms</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Multi-Level Dropdown</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Empty Page</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Dashboard</h1>
+                    <span style="margin-left: 20px;"></span> <!-- Adjust margin as needed -->
+                    <h1 class="h2">Dhruva Kumar</h1>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="dashboard-card bg-red">
+                            <h5>Daily Visits</h5>
+                            <h2>16,150</h2>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="dashboard-card bg-orange">
+                            <h5>Sales</h5>
+                            <h2>25,550</h2>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="dashboard-card bg-blue">
+                            <h5>Comments</h5>
+                            <h2>11,225</h5>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="dashboard-card bg-green">
+                            <h5>No. of Visits</h5>
+                            <h2>72,525</h5>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body1">
+                                <h5 class="card-title">Profit</h5>
+                                <canvas id="profitChart" width="100" height="100"></canvas>
+                                <div class="chart-percentage">75%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body1">
+                                <h5 class="card-title">No. of Visits</h5>
+                                <canvas id="visitsChart" width="100" height="100"></canvas>
+                                <div class="chart-percentage">46%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body1">
+                                <h5 class="card-title">Customers</h5>
+                                <canvas id="customersChart" width="100" height="100"></canvas>
+                                <div class="chart-percentage">84%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body1">
+                                <h5 class="card-title">Sales</h5>
+                                <canvas id="salesChart" width="100" height="100"></canvas>
+                                <div class="chart-percentage">55%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Combined Data</h5>
+                                <div class="chart-container">
+                                    <canvas id="combinedChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Function to create doughnut chart
+        function createDoughnutChart(ctx, data, backgroundColor, text) {
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: data,
+                        backgroundColor: backgroundColor
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutoutPercentage: 80,
+                    tooltips: {
+                        enabled: false
+                    },
+                    legend: {
+                        display: false
+                    },
+                    plugins: {
+                        beforeDraw: function(chart) {
+                            var width = chart.width,
+                                height = chart.height,
+                                ctx = chart.ctx;
+                            ctx.restore();
+                            var fontSize = (height / 150).toFixed(2);
+                            ctx.font = fontSize + "em sans-serif";
+                            ctx.textBaseline = "middle";
+                            var text = text,
+                                textX = Math.round((width - ctx.measureText(text).width) / 2),
+                                textY = height / 2;
+                            ctx.fillText(text, textX, textY);
+                            ctx.save();
+                        }
+                    }
+                }
+            });
+        }
+
+        // Doughnut Charts
+        createDoughnutChart(document.getElementById('profitChart').getContext('2d'), [75, 25], ['#007bff', '#e9ecef'], '75%');
+        createDoughnutChart(document.getElementById('visitsChart').getContext('2d'), [46, 54], ['#dc3545', '#e9ecef'], '46%');
+        createDoughnutChart(document.getElementById('customersChart').getContext('2d'), [84, 16], ['#28a745', '#e9ecef'], '84%');
+        createDoughnutChart(document.getElementById('salesChart').getContext('2d'), [55, 45], ['#ffc107', '#e9ecef'], '55%');
+
+        // Function to create combined line and bar chart
+        function createCombinedChart(ctx, labels, lineData, barData) {
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        type: 'line',
+                        label: 'Line Data',
+                        data: lineData,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        fill: false,
+                        tension: 0.1
+                    }, {
+                        type: 'bar',
+                        label: 'Bar Data',
+                        data: barData,
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: 'Month'
+                            }
+                        },
+                        y: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: 'Value'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Combined Chart
+        var combinedChartLabels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        var combinedChartLineData = [65, 59, 80, 81, 56, 55, 40, 45, 60, 70, 75, 85];
+        var combinedChartBarData = [28, 48, 40, 19, 86, 27, 90, 60, 65, 75, 80, 95];
+        createCombinedChart(document.getElementById('combinedChart').getContext('2d'), combinedChartLabels, combinedChartLineData, combinedChartBarData);
+    </script>
+</body>
+</html>
